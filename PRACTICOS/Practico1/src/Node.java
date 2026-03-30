@@ -1,7 +1,8 @@
 public class Node<T> {
 
-    private T info;
-    private Node<T> next;
+    //los nodos tienen dos partes: la info que guardan(T info) y la referencia al siguiente (Node<T> next)
+    private T info; //guarda infomacion
+    private Node<T> next; //guarda otro nodo a continuacion (referencia)
 
     public Node() {
         this.info = null;
