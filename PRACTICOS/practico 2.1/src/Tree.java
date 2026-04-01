@@ -29,20 +29,15 @@ public class Tree {
     private boolean hasElemRec(TreeNode actual, int value) {
         if(actual == null) {
             return false;
-        } if
-    }
-
-    /*private boolean hasElemRecursive(Node node, Integer value) {
-        if (node == null) {
-            return false; // Elemento no encontrado si se llega a un nodo nulo
-        } else if (value.equals(node.getValue())) {
-            return true; // Elemento encontrado si coincide con el valor del nodo
-        } else if (value < node.getValue()) {
-            return hasElemRecursive(node.getLeft(), value); // Busca en el subárbol izquierdo
+        } else
+            if(actual.getValue() == value) {
+                return true;
+        } else if(actual.getValue() < value) {
+                return hasElemRec(actual.getRight(), value); //busco el elemento a la derecha
         } else {
-            return hasElemRecursive(node.getRight(), value); // Busca en el subárbol derecho
+            return hasElemRec(actual.getLeft(), value); //busco el elemento a la izquierda
         }
-    }*/
+    }
 
     //verifica si esta vacio el arbol
     public boolean isEmpty() {
@@ -93,6 +88,60 @@ public class Tree {
             int derecha = getHeightRec(arbol.getRight());
             //devuelve la rama las larga, mas 1 de la raiz
             return Math.max(derecha, izquierda) + 1;
+        }
+    }
+
+    //imprimir preOrder
+    public void printPreOrder() {
+        if(this.root != null) {
+            this.printPreOrder(this.root);
+        }
+    }
+
+    private void printPreOrder(TreeNode actual) {
+        if(actual == null) {
+            System.out.println("-");
+        }
+        else {
+            System.out.print(actual.getValue() + " ");
+            this.printPreOrder(actual.getLeft());
+            this.printPreOrder(actual.getRight());
+        }
+    }
+
+    //imprimir posOrder
+    public void printPosOrder(){
+        if(this.root !=null) {
+            this.printPosOrder(this.root);
+        }
+    }
+
+    private void printPosOrder(TreeNode actual) {
+        if(actual == null) {
+            System.out.println("-");
+        }
+        else {
+            this.printPosOrder(actual.getLeft());
+            this.printPosOrder(actual.getRight());
+            System.out.print(actual.getValue() + " ");
+        }
+    }
+
+    //imprimir inOrder
+    public void printInOrder() {
+        if(this.root != null) {
+            this.printInOrder(this.root);
+        }
+    }
+
+    private void printInOrder(TreeNode actual) {
+        if(actual == null) {
+            System.out.println("-");
+        }
+        else {
+            this.printInOrder(actual.getLeft());
+            System.out.print(actual.getValue() + " ");
+            this.printInOrder(actual.getRight());
         }
     }
 }
