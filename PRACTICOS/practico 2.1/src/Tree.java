@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 public class Tree {
 
     private TreeNode root;
@@ -18,10 +22,6 @@ public class Tree {
 
     //ver si tiene un elemento
     public boolean hasElem(int value) {
-        //verifica si el valor no existe o si no tiene raiz
-        if(root ==null) {
-            return false;
-        }
         //genera la recursion para entrar al arbol
         return hasElemRec(root, value);
     }
@@ -144,4 +144,66 @@ public class Tree {
             this.printInOrder(actual.getRight());
         }
     }
+
+    //obtener todas las hojas
+    public List<Integer> getFrontera() {
+        List<Integer> frontera = new LinkedList<>();
+        getFronteraRec(root, frontera);
+        return frontera;
+    }
+
+    private void getFronteraRec(TreeNode actual, List<Integer> frontera) {
+        if(actual == null) {
+            return;
+        } else if (actual.getLeft() == null && actual.getRight() == null) {
+            //si es una hoja se agrega a la lista
+            frontera.add(actual.getValue());
+        } else { //si no es una hoja debe ir a izquierda y derecha y hacer recursivo
+            getFronteraRec(actual.getLeft(), frontera);
+            getFronteraRec(actual.getRight(), frontera);
+        }
+    }
+
+    //ejercicio 2 - arbol binario de busqueda
+    public int contarNodosInternos() {
+        return contarNodosInternosRec(this.root);
+    }
+
+    private int contarNodosInternosRec(TreeNode actual) {
+        //pregunto si esta vacio
+        if(actual == null) {
+            return 0;
+        }
+        else {
+            //pregunto si tiene hojas a derecha o izquierda
+            if(actual.getLeft()!= null || actual.getRight() != null) {
+                return actual.getValue() + contarNodosInternosRec(actual.getLeft()) + contarNodosInternosRec(actual.getRight());
+            }
+        }
+        return 0;
+    }
+
+    //ejercicio 3 - buscar hojas mayores a un numero
+    public List<Integer> valoresMayorA(int k) {
+        List<Integer> resultado = new ArrayList<>();
+        valoresMayorARec(this.root, k, resultado);
+        return resultado;
+    }
+
+    private void valoresMayorARec(TreeNode actual, int k, List<Integer> resultado) {
+        if(actual == null) {
+            return;
+        } else if (actual.getLeft() == null && actual.getRight() == null) {
+            //controlo si es una hoja y consulto el valor de k
+            if(actual.getValue()>k) {
+                resultado.add(actual.getValue());
+            }
+        } else {
+            //busco recursivo a izquierda y derecha hasta llegar a una hoja
+            valoresMayorARec(actual.getLeft(), k, resultado);
+            valoresMayorARec(actual.getRight(), k, resultado);
+        }
+    }
+
+    //ejercicio 4 - arbol binario no de busqueda
 }
