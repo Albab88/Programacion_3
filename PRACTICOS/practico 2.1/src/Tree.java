@@ -2,8 +2,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.tree.TreeNode;
-
 public class Tree {
 
     private TreeNode root;
@@ -95,10 +93,9 @@ public class Tree {
 
     //imprimir preOrder
     public void printPreOrder() {
-        /*if(this.root != null) {
+        if(this.root != null) {
             this.printPreOrder(this.root);
-        }*/
-        this.printPreOrder(this.root);
+        }
     }
 
     private void printPreOrder(TreeNode actual) {
@@ -114,10 +111,9 @@ public class Tree {
 
     //imprimir posOrder
     public void printPosOrder(){
-        /*if(this.root !=null) {
+        if(this.root !=null) {
             this.printPosOrder(this.root);
-        }*/
-        this.printPosOrder(this.root);
+        }
     }
 
     private void printPosOrder(TreeNode actual) {
@@ -133,10 +129,9 @@ public class Tree {
 
     //imprimir inOrder
     public void printInOrder() {
-        /*if(this.root != null) {
+        if(this.root != null) {
             this.printInOrder(this.root);
-        }*/
-        this.printInOrder(this.root);
+        }
     }
 
     private void printInOrder(TreeNode actual) {
@@ -166,6 +161,66 @@ public class Tree {
         } else { //si no es una hoja debe ir a izquierda y derecha y hacer recursivo
             getFronteraRec(actual.getLeft(), frontera);
             getFronteraRec(actual.getRight(), frontera);
+        }
+    }
+
+    //borrado hecho con Maxi
+    private TreeNode delete(TreeNode actual, int valor) {
+        if(valor > actual.getValue()) {
+            //le seteo 
+            actual.setValue(delete(actual.getRight(), valor));
+        }
+        if(valor < actual.getValue()) {
+            actual.setValue(delete(actual.getLeft(), valor));
+        }
+        //busco el nodo mas a la izquierda que sea hoja para poder usarlo
+        TreeNode hijo = buscarNMI(actual.getRight());
+    }
+
+    private TreeNode buscarNMI(TreeNode actual) {
+        if(actual == null) {
+            return null;
+        }
+        else {
+            return actual.getLeft();
+        }
+    }
+
+    //borrado en clase
+    public void delete(int valor) {
+        root = deleteRec(this.root, valor); //esto es para cuando la raiz ...
+    }
+
+    private TreeNode deleteRec(TreeNode actual, int valor) {
+        //el arbol es null entonces devuelvo arbol vacio
+        if(actual == null) {
+            return null;
+        } else if(actual.getValue().equals(valor)) { //lo encontre
+            //caso 1: es hoja
+            if(actual.esHoja()) { //este metodo es del TreeNode y hay que hacerlo
+                //este arbol tiene una unica hoja que es este valor
+                return null;
+            }
+            else {
+                //caso 2: tiene un hjo (tengo que ver los dos)
+                if(actual.getLeft() == null) {
+                    return actual.getRight(); //devolve lo que estaba a la derecha
+                }
+                else if(actual.getRight() == null) {
+                    return actual.getLeft(); //devolvi lo que estaba a la izquierda
+                } else {
+                    //caso 3:cuando tengo dos hojas - ver si pero no es el valor
+                    int valorNuevo = getMaxElem(actual.getLeft()); //hacer el getMAxElem en el Tree
+                    actual.setValue(valorNuevo); //nuevo valor queda duplicado
+                    actual.setLeft(delete(actual.getLeft(), valorNuevo));
+                    return actual;
+                }
+            }
+            //cuando no encontre el valor y tengo que ver si esta a derecha o a izquierda
+        } else if(actual.getValue() > valor){
+             actual.setLeft(delete(actual.getLeft(), valor));
+        } else {
+            actual.setRight(delete(actual.getRight(), valor));
         }
     }
 
@@ -199,7 +254,7 @@ public class Tree {
         if(actual == null) {
             return;
         } else if (actual.getLeft() == null && actual.getRight() == null) {
-            //controlo si es una hoja y consulto el valor de k
+            //controlo si es una hoja y en ese caso consulto el valor de k
             if(actual.getValue()>k) {
                 resultado.add(actual.getValue());
             }
@@ -210,5 +265,46 @@ public class Tree {
         }
     }
 
-    //ejercicio 4 - arbol binario no de busqueda
+    //ejercicio 4 - arbol binario no de busqueda - ver si funciona
+    public void completarArbol() {
+        if(root != null) {
+            completarArbolRec(this.root);
+        }
+    }
+
+    private void completarArbolRec(TreeNode actual) {
+        //pregunto su tiene dos hojas y retorno el valor pedido
+        if(actual.getLeft() != null && actual.getRight() != null) {
+            actual.setValue(actual.getRight().getValue() - actual.getLeft().getValue());
+        } else if(actual.getLeft() != null && actual.getRight() == null) {
+            // el derecho se hace 0 y resuelvo
+            actual.setValue(0-actual.getLeft().getValue());
+        } else if(actual.getLeft() == null && actual.getRight() != null) {
+            //el izquierdo se hace 0 y resuelvo
+            actual.setValue(actual.getRight().getValue());
+        } else {
+            completarArbolRec(actual.getLeft());
+            completarArbolRec(actual.getRight());
+        }
+    }
+
+    //ejercicio 4 charlado con Maxi
+    public void completaArbol(){
+        completar(this.root);
+    }
+
+    private int completar(TreeNode actual){
+        if(actual == null){
+            return 0;
+        }
+        if(actual.getRight() == null && actual.getLeft() == null) {
+            return actual.getValue();
+        }
+        int valorR = completar(actual.getRight());
+        int valorL = completar(actual.getLeft());
+        actual.setValue(valorR - valorL);
+        return actual.getValue();
+    }
+
+    //ejercicio 6 -
 }
