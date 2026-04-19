@@ -1,3 +1,6 @@
+import java.util.LinkedList;
+import java.util.List;
+
 public class Tree {
 
     private TreeNode root;
@@ -18,11 +21,7 @@ public class Tree {
 
     //ver si tiene un elemento
     public boolean hasElem(int value) {
-        //verifica si el valor no existe o si no tiene raiz
-        if(root ==null) {
-            return false;
-        }
-        //genera la recursion para entrar al arbol
+       //genera la recursion para entrar al arbol
         return hasElemRec(root, value);
     }
 
@@ -93,9 +92,10 @@ public class Tree {
 
     //imprimir preOrder
     public void printPreOrder() {
-        if(this.root != null) {
+        /*if(this.root != null) {
             this.printPreOrder(this.root);
-        }
+        }*/
+        this.printPreOrder(this.root);
     }
 
     private void printPreOrder(TreeNode actual) {
@@ -111,9 +111,10 @@ public class Tree {
 
     //imprimir posOrder
     public void printPosOrder(){
-        if(this.root !=null) {
+        /*if(this.root !=null) {
             this.printPosOrder(this.root);
-        }
+        }*/
+        this.printPosOrder(this.root);
     }
 
     private void printPosOrder(TreeNode actual) {
@@ -129,9 +130,10 @@ public class Tree {
 
     //imprimir inOrder
     public void printInOrder() {
-        if(this.root != null) {
+        /*if(this.root != null) {
             this.printInOrder(this.root);
-        }
+        }*/
+        this.printInOrder(this.root);
     }
 
     private void printInOrder(TreeNode actual) {
@@ -143,5 +145,42 @@ public class Tree {
             System.out.print(actual.getValue() + " ");
             this.printInOrder(actual.getRight());
         }
+    }
+
+    //encontrar la rama mas larga
+    public List getLongestBranch() {
+        return this.getLongestBranch(this.root);
+    }
+
+    private List getLongestBranch(TreeNode actual) {
+        List<Integer> branch = new LinkedList<>();
+        if(actual == null) {
+            return branch;
+        }
+        // genero un List
+        //pregunto a la raiz si tiene hijos
+        //si tiene hijos se llama a si misma
+        //devuelvo lo que me da mas uno
+//si no tiene devuelvo uno
+        return;
+    }
+
+    //obtener la frontera, todas las hojas
+    public List<Integer> getFrontera() {
+        List<Integer> frontera = new LinkedList<>();
+        getFronteraRec(this.root, frontera);
+    }
+
+    private void getFronteraRec(TreeNode actual, List<Integer> frontera) {
+        if(actual == null) {
+            return;
+        }
+        //si actual no tiene hijos lo agregamos a el a la lista
+        if(actual.getLeft() == null && actual.getRight() == null) {
+            frontera.add(actual.getValue());
+        }
+        // si tiene hijos recorre y agrega por recursividad
+        getFronteraRec(actual.getLeft(), frontera);
+        getFronteraRec(actual.getRight(), frontera);
     }
 }
